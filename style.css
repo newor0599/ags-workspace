@@ -1,0 +1,99 @@
+/* Default box style */
+.clock>box,
+.volume>box>revealer>box,
+.calendar>box{
+    background: #111115;
+    box-shadow: 0 0 10px 7px #121212;
+    border-radius: 10px;
+}
+
+/* Clock widget */
+.clock > box{
+    margin: 100px;
+    padding:20px;
+}
+
+.clock > box > label {
+    font-size: 90px;
+    font-family: "Cantarell-VF";
+    color: #ccccbb;
+}
+
+/* Calendar widget */
+.calendar > box{
+    margin:100px;
+    border-radius:0;
+}
+
+.calendar > box > button{
+    border-radius: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border:none;
+    border-top: 2px solid #ccccbb;
+    background: #111115;
+    box-shadow: 0 0 10px 7px #121212;
+    color: rgba(0,0,0,0);
+}
+
+.calendar > box > button:hover{
+    color: #333;
+}
+
+
+/* Calendar */
+calendar{
+    background-color: #111115;
+    margin:100px;
+    color: #eeeeff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border:none;
+}
+
+calendar:selected{
+    background-color:#eeeefa;
+    color: #111115;
+    border-radius: 10px;
+}
+
+/* Volume widget */
+.volume>box>revealer>box{
+    box-shadow: 0 0 5px 2px #121212;
+    padding: 0px;
+    margin: 20px 20px 50px 20px;
+    min-width:200px;
+}
+
+/*Slider value color*/
+.volume>box>revealer>box>scale trough highlight{
+    min-height: 30px;
+    min-width:  30px;
+    background-color:#ccccbb;
+    border:none;
+    border-radius:100px;
+    margin:1px;
+    
+}
+
+/*Slider background*/
+.volume>box>revealer>box>scale trough{
+    background-color:#212126;
+    border:none;
+    border-radius:100px;
+}
+
+/*Thumb*/
+.volume>box>revealer>box>scale trough slider{
+    background-image:none;
+    /* background-color: #4f4f66; */
+    background-color: rgba(0,0,0,0);
+    border:none;
+    box-shadow:none;
+}
+
+.volume{
+    background-image:none;
+    background-color:transparent;
+}
+
