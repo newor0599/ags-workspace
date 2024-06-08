@@ -7,6 +7,12 @@
     border-radius: 10px;
 }
 
+
+*{
+    font-family: "Trench";
+    font-weight: 700;
+}
+
 /* Clock widget */
 .clock > box{
     margin: 100px;
@@ -15,52 +21,36 @@
 
 .clock > box > label {
     font-size: 90px;
-    font-family: "Cantarell-VF";
     color: #ccccbb;
 }
 
 /* Calendar widget */
+
 .calendar > box{
-    margin:100px;
-    border-radius:0;
+    margin: 100px;
+}
+calendar {
+    all: unset;
+    padding: 4px 4px 0px;
+    font-size: 1.1em;
+    padding: .2em;
+    margin: 100px;
+    font-family: "Typo Round Bold Demo";
+    font-weight: 100;
+}
+
+calender:selected{
+    background-color: #ccccbb;
 }
 
 .calendar > box > button{
     border-radius: 0;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border:none;
-    border-top: 2px solid #ccccbb;
-    background: #111115;
-    box-shadow: 0 0 10px 7px #121212;
-    color: rgba(0,0,0,0);
-}
-
-.calendar > box > button:hover{
-    color: #333;
-}
-
-
-/* Calendar */
-calendar{
-    background-color: #111115;
-    margin:100px;
-    color: #eeeeff;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border:none;
-}
-
-calendar:selected{
-    background-color:#eeeefa;
-    color: #111115;
-    border-radius: 10px;
+    border-radius: 2px 2px 10px 10px;
 }
 
 /* Volume widget */
 .volume>box>revealer>box{
     box-shadow: 0 0 5px 2px #121212;
-    padding: 0px;
     margin: 20px 20px 50px 20px;
     min-width:200px;
 }
@@ -92,8 +82,25 @@ calendar:selected{
     box-shadow:none;
 }
 
+.volume>box{
+    padding: 1px;
+}
+
 .volume{
     background-image:none;
     background-color:transparent;
 }
 
+.volumeValue{
+    min-width: 30px;
+    margin-left: 10px;
+    font-size: 17px;
+    font-weight: 900;
+}
+
+.test>box{
+    padding:1px;
+}
+.test>box>revealer>box>label{
+    font-size:30px;
+}

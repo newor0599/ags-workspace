@@ -1,7 +1,7 @@
+import brightness from './backlight.js';
 const audio = await Service.import('audio')
-
-const time = Variable("", {
-    poll: [1000, 'date "+%H:%M"']
+const time = Variable("", { 
+    poll: [1000,'date "+%H:%M"']
 })
 
 const clockWidget = (/** @type {number} */ monitor) => Widget.Window({
@@ -38,55 +38,69 @@ const calendarWidget = (/** @type {number} */ monitor) => Widget.Window({
     }),
 })
 
-const VolumeSlider = () => Widget.Slider({
-    hexpand: true,
-    drawValue: false,
-    value: audio.speaker.bind('volume'),
-    onChange: ({ value }) => audio.speaker.volume = value,
+const VolumeSlider = () => Widget.Box({
+    children:[ 
+	Widget.Label({ 
+	    className: "volumeValue",
+	    label: "Undetected",
+	    setup: self => {
+		audio.speaker.connect("changed",() => {
+		    let vol = audio.speaker.volume*100
+		    if (vol > 100){
+			self.label = Math.round(vol).toString()
+		    } else if(vol > 50){
+			self.label = " "
+		    } else if(vol > 0){
+			self.label = ""
+		    } else{
+			self.label = " "
+		    }
+		})
+	    }
+	}),
+	Widget.Slider({
+	    hexpand: true,
+	    drawValue: false,
+	    value: audio.speaker.bind('volume'),
+	    onChange: ({ value }) => audio.speaker.volume = value,
+	}),
+    ]
 })
 
-var showVolume = 0
+// Volume widget
+let timeoutVol
+let volumeChanged = 0
+var showVol = Variable(false)
+audio.speaker.connect("changed",() => {
+    volumeChanged++
+    if (volumeChanged % 4 == 0){
+	volumeChanged = 0
+	clearTimeout(timeoutVol)
+	showVol.setValue(true)
+	timeoutVol = setTimeout(() => {
+	    showVol.setValue(false)
+	}, 1500);
+    }
+})
 const volumePopup = (monitor = 0) => Widget.Window({
     monitor,
+    layer:"top",
     keymode: 'none',
     name: `volumePopup ${monitor}`,
-    layer: "top",
     anchor: ["bottom"],
-    vexpand: true,
     class_name: "volume",
     child: Widget.Box({
-	vertical: true,
-	vexpand: true,
-	spacing: 0,
-	homogeneous: true,
-	children:[
+	vertical:true,
+	children: [
 	    Widget.Revealer({
-		transitionDuration: 300,
+		revealChild: showVol.bind(),
+		transitionDuration:500,
 		transition: "slide_up",
-		vexpand: true,
-		child: Widget.Box({
-		    vertical: true,
-		    vexpand: true,
-		    children: [VolumeSlider()]
-		}),
-		setup: self => {
-		    var hideVolume
-		    audio.speaker.connect("changed",() => {
-			showVolume++
-			if (showVolume % 4 == 0){
-			    clearTimeout(hideVolume)
-			    print(audio.speaker.volume)
-			    self.reveal_child = true
-			    hideVolume = setTimeout(() => {
-				self.reveal_child = false
-			    }, 1000);}
-		    })
-		}
+		child: VolumeSlider(),
 	    })
 	]
-    })
+    }),
 })
-
 
 App.config({
     style: "./style.css",
