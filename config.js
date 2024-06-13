@@ -1,5 +1,6 @@
 import brightness from './backlight.js';
 const audio = await Service.import('audio')
+const hyprland = await Service.import('hyprland')
 const time = Variable("", { 
     poll: [1000,'date "+%H:%M"']
 })
@@ -102,7 +103,81 @@ const volumePopup = (monitor = 0) => Widget.Window({
     }),
 })
 
+function workspaceDot(workspaceNumber) {
+    return Widget.Box({
+	children:[
+	    Widget.EventBox({
+		vexpand:true,
+		hexpand:true,
+		on_primary_click: () => {
+		    Utils.exec(`hyprctl dispatch workspace ${workspaceNumber.toString()}`)
+		}
+	    })
+	],
+	class_name: "spaceDot",
+	setup: self => {
+	    hyprland.connect("event",() => {
+		let currentFocus = hyprland.getMonitor(0)?.activeWorkspace.id
+		if (currentFocus == workspaceNumber){
+		    self.toggleClassName('focus',true)
+		}else{
+		    self.toggleClassName('focus',false)
+		}
+	    })
+	},
+    })
+}
+
+
+const workspaceInd = (monitor = 0) => Widget.Window({
+    monitor,
+    layer:"top",
+    name: `workspace Indicator ${monitor}`,
+    anchor: ["top"],
+    class_name: "workspace",
+    child: Widget.Box({
+	vertical:true,
+	children: [
+	    Widget.Revealer({
+		transitionDuration: 500,
+		transition: "slide_down",
+		child:Widget.Box({
+		    children: [
+			workspaceDot(1),
+			workspaceDot(2),
+			workspaceDot(3),
+			workspaceDot(4),
+			workspaceDot(5),
+			workspaceDot(6),
+			workspaceDot(7),
+			workspaceDot(8),
+			workspaceDot(9),
+			workspaceDot(10),
+		    ]
+		}),
+		setup: self => {
+		    let oldFocus
+		    let currentFocus
+		    let timeOut
+		    hyprland.connect("event",()=>{
+			currentFocus = hyprland.getMonitor(monitor)?.activeWorkspace.id
+			if (currentFocus != oldFocus){
+			    oldFocus = currentFocus
+			    clearTimeout(timeOut)
+			    self.reveal_child = true
+			    timeOut = setTimeout(() => {
+				self.reveal_child = false
+			    },1000)
+			}
+		    })
+		}
+	    })
+	]
+    }),
+})
+
+
 App.config({
     style: "./style.css",
-    windows: [calendarWidget(0),clockWidget(0),volumePopup(0)],
+    windows: [calendarWidget(0),clockWidget(0),volumePopup(0),workspaceInd(0)],
 })

@@ -1,7 +1,8 @@
 /* Default box style */
 .clock>box,
 .volume>box>revealer>box,
-.calendar>box{
+.calendar>box,
+.workspace > box > revealer > box{
     background: #111115;
     box-shadow: 0 0 10px 7px #121212;
     border-radius: 10px;
@@ -103,4 +104,31 @@ calender:selected{
 }
 .test>box>revealer>box>label{
     font-size:30px;
+}
+
+/* Workspace */
+.workspace > box{
+    padding: 1px;
+}
+.workspace > box> revealer > box > label{
+    all:unset;
+}
+.workspace>box>revealer>box{
+    box-shadow: 0 0 5px 5px #121212;
+    margin: 10px;
+    padding: 10px;
+}
+
+/* Workspace dot */
+.spaceDot{
+    background: #212126;
+    margin:0px 3px 0px 3px;
+    transition: .5s ease, background .2s ease;
+    border-radius: 20px;
+    min-width: 20px;
+    min-height: 20px;
+}
+.spaceDot.focus{
+    min-width: 40px;
+    background: #ccccbb;
 }
