@@ -71,18 +71,24 @@ const VolumeSlider = () => Widget.Box({
 // Volume widget
 let timeoutVol
 let volumeChanged = 0
+let oldVolume
 var showVol = Variable(false)
 audio.speaker.connect("changed",() => {
     volumeChanged++
-    if (volumeChanged % 4 == 0){
-	volumeChanged = 0
-	clearTimeout(timeoutVol)
-	showVol.setValue(true)
-	timeoutVol = setTimeout(() => {
-	    showVol.setValue(false)
-	}, 1500);
+    if (audio.speaker.bind('volume') != oldVolume){
+	oldVolume = audio.speaker.bind('volume')
+	if (volumeChanged % 4 == 0){
+	    volumeChanged = 0
+	    clearTimeout(timeoutVol)
+	    showVol.setValue(true)
+	    timeoutVol = setTimeout(() => {
+		showVol.setValue(false)
+	    }, 1500);
+
+	}
     }
 })
+
 const volumePopup = (monitor = 0) => Widget.Window({
     monitor,
     layer:"top",
@@ -175,6 +181,8 @@ const workspaceInd = (monitor = 0) => Widget.Window({
 	]
     }),
 })
+
+// Bluetooth
 
 
 App.config({
